@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guess My Heritage</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; display:flex; min-height:100svh; margin:0; }
+    .card { margin:auto; max-width:520px; width:92%; padding:28px; border:1px solid #ddd; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,.06); }
+    h1 { margin:0 0 14px; font-size:1.4rem; }
+    form { display:flex; gap:8px; }
+    input[type="text"]{ flex:1; padding:12px 14px; border:1px solid #ccc; border-radius:10px; font-size:1rem; }
+    button{ padding:12px 16px; border:0; border-radius:10px; background:#111; color:#fff; font-weight:600; cursor:pointer; }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
+    #out { margin-top:16px; font-size:1.1rem; }
+    small { color:#666; display:block; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Guess My Heritage</h1>
+    <form id="f">
+      <input id="name" type="text" placeholder="type your name…" autocomplete="name" required />
+      <button type="submit">Go</button>
+    </form>
+    <div id="out" aria-live="polite" role="status"></div>
+    <small>(this is just for fun — not a real heritage test)</small>
+  </main>
+
+  <script>
+    const elForm = document.getElementById('f');
+    const elName = document.getElementById('name');
+    const elOut  = document.getElementById('out');
+
+    // Basic sanitizer to avoid injecting HTML
+    function sanitize(text){
+      return text.replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[s]));
+    }
+
+    elForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = elName.value.trim();
+      if(!name){ elOut.textContent = ''; return; }
+      elOut.innerHTML = `hi ${sanitize(name)}, you are 100% african`;
+      elName.focus();
+      elName.select();
+    });
+  </script>
+</body>
+</html>
